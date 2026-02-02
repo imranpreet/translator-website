@@ -10,6 +10,7 @@ const Translator = () => {
   const [showDemo, setShowDemo] = useState(false);
   const [translationCount, setTranslationCount] = useState(1247);
   const [activeFeature, setActiveFeature] = useState(0);
+  const [expandedUseCase, setExpandedUseCase] = useState(null);
 
   // Counter animation effect
   useEffect(() => {
@@ -554,23 +555,107 @@ const Translator = () => {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: '💼', title: 'Business', desc: 'International client communication', color: 'from-blue-600 to-cyan-600' },
-                { icon: '📚', title: 'Education', desc: 'Academic research & learning', color: 'from-violet-600 to-purple-600' },
-                { icon: '✈️', title: 'Travel', desc: 'Navigate foreign destinations', color: 'from-emerald-600 to-teal-600' },
-                { icon: '✍️', title: 'Content', desc: 'Multilingual content creation', color: 'from-orange-600 to-red-600' }
+                { 
+                  icon: '💼', 
+                  title: 'Business', 
+                  desc: 'International client communication', 
+                  color: 'from-blue-600 to-cyan-600',
+                  details: {
+                    features: ['📧 Email Translation', '📞 Video Call Support', '📄 Document Translation', '🤝 Contract Review'],
+                    stats: '500K+ Businesses',
+                    benefit: 'Close deals faster with real-time translation'
+                  }
+                },
+                { 
+                  icon: '📚', 
+                  title: 'Education', 
+                  desc: 'Academic research & learning', 
+                  color: 'from-violet-600 to-purple-600',
+                  details: {
+                    features: ['📖 Research Papers', '🎓 Online Courses', '📝 Study Materials', '🌍 Global Collaboration'],
+                    stats: '2M+ Students',
+                    benefit: 'Access knowledge in any language'
+                  }
+                },
+                { 
+                  icon: '✈️', 
+                  title: 'Travel', 
+                  desc: 'Navigate foreign destinations', 
+                  color: 'from-emerald-600 to-teal-600',
+                  details: {
+                    features: ['🗺️ Direction Translation', '🍽️ Menu Reading', '🏨 Hotel Communication', '🚖 Local Navigation'],
+                    stats: '1M+ Travelers',
+                    benefit: 'Travel confidently anywhere in the world'
+                  }
+                },
+                { 
+                  icon: '✍️', 
+                  title: 'Content', 
+                  desc: 'Multilingual content creation', 
+                  color: 'from-orange-600 to-red-600',
+                  details: {
+                    features: ['📱 Social Media Posts', '📰 Blog Articles', '🎬 Video Captions', '📢 Marketing Copy'],
+                    stats: '300K+ Creators',
+                    benefit: 'Reach global audiences effortlessly'
+                  }
+                }
               ].map((useCase, index) => (
-                <div key={index} className="group bg-white/90 backdrop-blur-xl rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer border-2 border-slate-200/50 hover:border-indigo-300 hover:scale-105">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${useCase.color} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg text-3xl`}>
-                    {useCase.icon}
+                <div key={index} className="group bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-slate-200/50 hover:border-indigo-300 overflow-hidden">
+                  <div className="p-8 cursor-pointer" onClick={() => setExpandedUseCase(expandedUseCase === index ? null : index)}>
+                    <div className={`w-16 h-16 bg-gradient-to-br ${useCase.color} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg text-3xl`}>
+                      {useCase.icon}
+                    </div>
+                    <h3 className="text-2xl font-black mb-3 text-slate-900">{useCase.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{useCase.desc}</p>
+                    <div className="mt-5 flex items-center text-indigo-600 font-bold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore</span>
+                      <svg className={`w-5 h-5 transition-transform ${expandedUseCase === index ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-black mb-3 text-slate-900">{useCase.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{useCase.desc}</p>
-                  <div className="mt-5 flex items-center text-indigo-600 font-bold group-hover:gap-3 gap-2 transition-all">
-                    <span>Explore</span>
-                    <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </div>
+                  
+                  {/* Expanded Details */}
+                  {expandedUseCase === index && (
+                    <div className="bg-gradient-to-br from-slate-50 to-indigo-50 p-6 border-t-2 border-indigo-200 animate-fadeIn">
+                      <div className="mb-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-2xl">⭐</span>
+                          <h4 className="font-black text-lg text-slate-900">Key Features</h4>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {useCase.details.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm font-semibold text-slate-700 bg-white/60 rounded-lg px-3 py-2">
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-2xl">👥</span>
+                        <div>
+                          <div className="text-sm text-slate-600 font-medium">Trusted by</div>
+                          <div className={`text-xl font-black bg-gradient-to-r ${useCase.color} bg-clip-text text-transparent`}>
+                            {useCase.details.stats}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-2 bg-white/80 rounded-lg p-3">
+                        <span className="text-xl">💡</span>
+                        <div>
+                          <div className="text-xs text-slate-500 font-bold uppercase mb-1">Why Choose Us</div>
+                          <div className="text-sm font-semibold text-slate-700">{useCase.details.benefit}</div>
+                        </div>
+                      </div>
+                      
+                      <button className={`w-full mt-4 bg-gradient-to-r ${useCase.color} text-white font-bold py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2`}>
+                        <span>Get Started</span>
+                        <span className="text-lg">🚀</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
